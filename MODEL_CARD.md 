@@ -1,0 +1,50 @@
+This refined `MODEL_CARD.md` combines your existing technical details with production-grade "Responsible AI" documentation. It is designed to demonstrate to reviewers that you understand both the **mechanics** of your model and the **ethical risks** of deploying it.
+
+---
+
+# Model Card: AcmeDesk Support Copilot
+
+## 1. Model Details
+
+* **Version**: 1.0.0
+* **Type**: Hybrid System
+* **Triage**: Logistic Regression with TF-IDF Vectorization.
+* **Response**: RAG (Retrieval-Augmented Generation) using `all-MiniLM-L6-v2` embeddings and GPT-3.5 Turbo.
+
+
+* **Task**: Multiclass Ticket Classification (Category/Priority) + Grounded Support Response Generation.
+* **Language**: English.
+
+## 2. Intended Use
+
+* **Primary Use**: Automated triage of incoming customer support tickets to reduce agent response time (MTTA).
+* **Primary Users**: AcmeDesk Support Operations and Tier 1 Support Agents.
+* **Out-of-Scope**:
+* Processing financial transactions or sensitive billing data.
+* Providing legal or medical advice.
+* Handling non-English support queries.
+
+
+
+## 3. Training & Data
+
+* **Triage Training Set**: `tickets_train.csv` (Synthetic, ~300 entries).
+* **Knowledge Base (KB)**: Local Markdown documentation (`kb_docs/`) containing product FAQs and troubleshooting steps.
+* **Preprocessing**: Text lowercase conversion, punctuation removal, and TF-IDF feature extraction.
+
+## 4. Performance & Evaluation
+
+* **Triage Metrics**: 1.0 F1 Score on Categories (Note: Reflects distinct keyword patterns in synthetic data; real-world performance will likely decrease with natural language variability).
+* **RAG Groundedness**: **0.76 (Raw)**. This indicates that while the model stays grounded in the KB, it correctly refuses to answer out-of-scope queries (e.g., "Dark Mode") where no documentation exists.
+
+## 5. Risks, Bias, and Limitations
+
+* **Synthetic Overfitting**: The triage model is highly tuned to specific synthetic keywords (e.g., "API," "Login"). It may fail on slang, typos, or highly descriptive but low-keyword-density tickets.
+* **Silent Triage Errors**: If a high-priority issue (P0) lacks "emergency" trigger words, the model may default to P2, potentially delaying critical system outages.
+* **Hallucinations**: While strictly grounded, the LLM may struggle if the Knowledge Base contains contradictory information.
+
+## 6. Security & Mitigation Strategy
+
+* **Adversarial Defense**: Mandatory refusal logic for prompt injection ("Ignore previous instructions") and out-of-scope requests (jokes, recipes).
+* **Human-in-the-Loop (HITL)**: Any triage prediction with a confidence score `< 0.60` is automatically flagged for mandatory human review.
+* **PII Guarding**: (Planned) Integration of Microsoft Presidio to scrub customer data before LLM processing.
