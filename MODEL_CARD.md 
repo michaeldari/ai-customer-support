@@ -1,7 +1,3 @@
-This refined `MODEL_CARD.md` combines your existing technical details with production-grade "Responsible AI" documentation. It is designed to demonstrate to reviewers that you understand both the **mechanics** of your model and the **ethical risks** of deploying it.
-
----
-
 # Model Card: AcmeDesk Support Copilot
 
 ## 1. Model Details
