@@ -1,7 +1,3 @@
-Based on your current system logic and the feedback provided, here is the refined `ARCHITECTURE.md`. This version is structured to demonstrate professional-grade "System Design" thinking, focusing on the specific pipelines, tradeoffs, and production roadmap you have built.
-
----
-
 # System Architecture: AcmeDesk Support Copilot
 
 ## 1. System Overview
